@@ -2,7 +2,7 @@
 
 > A deep learning web application that classifies Alzheimer's disease severity from brain MRI scans using a dual-branch EfficientNetB4 + ResNet50V2 attention fusion model.
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://your-app-link.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://femi-alzheimer-detection.streamlit.app/)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-orange)
 ![Accuracy](https://img.shields.io/badge/Test%20Accuracy-98.99%25-brightgreen)
