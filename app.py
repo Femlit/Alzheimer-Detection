@@ -93,7 +93,7 @@ if page == "Diagnose":
 
         with col1:
             st.subheader("Uploaded MRI Scan")
-            st.image(img_pil, use_container_width=True, caption="Original MRI")
+            st.image(img_pil, width="stretch", caption="Original MRI")
 
         # Preprocess and predict
         img_input, img_display = preprocess_image(img_pil)
@@ -127,7 +127,7 @@ if page == "Diagnose":
             try:
                 heatmap, _ = make_gradcam_heatmap(img_input, model)
                 overlay, coloured = overlay_gradcam(img_display, heatmap)
-                st.image(overlay, use_container_width=True,
+                st.image(overlay, width="stretch",
                          caption="Heatmap overlay — warm regions drove the prediction")
                 st.caption(
                     "Red/warm areas indicate brain regions that most strongly "
@@ -191,7 +191,7 @@ elif page == "Model Performance":
         "Support":   ["751",  "74",   "10,084", "2,059"],
     }
     import pandas as pd
-    st.dataframe(pd.DataFrame(per_class_data), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(per_class_data), width="stretch", hide_index=True)
 
     st.divider()
 
@@ -208,14 +208,14 @@ elif page == "Model Performance":
     for tab, (title, path) in zip(tabs, plot_files.items()):
         with tab:
             if os.path.exists(path):
-                st.image(path, use_container_width=True, caption=title)
+                st.image(path, width="stretch", caption=title)
             else:
                 st.warning(f"{path} not found. Copy your plot files to the assets/ folder.")
 
     st.divider()
     st.subheader("Grad-CAM Examples from Test Set")
     if os.path.exists("assets/gradcam_grid.png"):
-        st.image("assets/gradcam_grid.png", use_container_width=True,
+        st.image("assets/gradcam_grid.png", width="stretch",
                  caption="Grad-CAM heatmaps across all four dementia classes on the OASIS test set")
 
     st.divider()
@@ -227,7 +227,7 @@ elif page == "Model Performance":
         "Accuracy":     ["94.20%", "95.93%", "97.31%", "98.99%"],
     }
     df_bench = pd.DataFrame(benchmark)
-    st.dataframe(df_bench, use_container_width=True, hide_index=True)
+    st.dataframe(df_bench, width="stretch", hide_index=True)
 
 
 # ═══════════════════════════════════════════════════════════════
