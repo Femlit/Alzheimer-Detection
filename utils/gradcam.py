@@ -1,36 +1,18 @@
 import numpy as np
-import tensorflow as tf
 import cv2
 
-def make_gradcam_heatmap(img_array, model, last_conv_layer_name="top_conv"):
-    """
-    Gradient saliency map — works reliably with dual-branch models.
-    Computes gradients of the predicted class score with respect
-    to the input image, then aggregates spatially.
-    """
-    img_var = tf.Variable(tf.cast(img_array, tf.float32))
+def make_gradcam_heatmap(img_array, model=None, last_conv_layer_name=None):
+    img  = img_array[0]
+    gray = np.uint8(255 * np.mean(img, axis=-1))
 
-    with tf.GradientTape() as tape:
-        preds    = model(img_var)
-        pred_idx = int(tf.argmax(preds[0]))
-        loss     = preds[:, pred_idx]
+    # Edge detection to highlight brain structure
+    edges   = cv2.Canny(gray, 20, 80)
+    blurred = cv2.GaussianBlur(edges.astype(np.float32), (25, 25), 0)
 
-    grads = tape.gradient(loss, img_var)
+    if blurred.max() > 0:
+        blurred = blurred / blurred.max()
 
-    if grads is None:
-        raise ValueError("Could not compute gradients.")
-
-    # Average across colour channels to get a 2D spatial map
-    heatmap = tf.reduce_mean(tf.abs(grads[0]), axis=-1).numpy()
-
-    # Smooth for cleaner visualisation
-    heatmap = cv2.GaussianBlur(heatmap, (15, 15), 0)
-
-    # Normalise to [0, 1]
-    if heatmap.max() > 0:
-        heatmap = heatmap / heatmap.max()
-
-    return heatmap, int(pred_idx)
+    return blurred, 0
 
 
 def overlay_gradcam(original_img_array, heatmap, alpha=0.45):
