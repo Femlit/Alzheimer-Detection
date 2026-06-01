@@ -1,0 +1,22 @@
+{
+    "test_accuracy": 0.9898982048034668,
+    "test_precision": 0.9900463223457336,
+    "test_recall": 0.9894355535507202,
+    "test_auc": 0.9997597336769104,
+    "weighted_f1": 0.9899565057132069,
+    "best_val_accuracy": 0.9905900359153748,
+    "total_epochs_trained": 30,
+    "train_samples": 60504,
+    "val_samples": 12965,
+    "test_samples": 12968,
+    "dataset": "OASIS (ninadaithal/imagesoasis)",
+    "split": "70 / 15 / 15",
+    "data_leakage": false,
+    "architecture": "EfficientNetB4 + ResNet50V2 Attention Fusion",
+    "classes": [
+        "MildDementia",
+        "ModerateDementia",
+        "NonDemented",
+        "VeryMildDementia"
+    ]
+}
