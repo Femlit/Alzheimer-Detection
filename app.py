@@ -96,11 +96,19 @@ if page == "Diagnose":
             st.image(img_pil, width="stretch", caption="Original MRI")
 
         # Preprocess and predict
+        # Preprocess and predict
         img_input, img_display = preprocess_image(img_pil)
-        predictions = model.predict(img_input, verbose=0)[0]
-        pred_idx    = int(np.argmax(predictions))
-        pred_class  = CLASSES[pred_idx]
-        confidence  = float(predictions[pred_idx]) * 100
+        
+        # TFLite prediction
+        input_details  = model.get_input_details()
+        output_details = model.get_output_details()
+        model.set_tensor(input_details[0]['index'], img_input.astype('float32'))
+        model.invoke()
+        predictions = model.get_tensor(output_details[0]['index'])[0]
+        
+        pred_idx   = int(np.argmax(predictions))
+        pred_class = CLASSES[pred_idx]
+        confidence = float(predictions[pred_idx]) * 100
         colour      = CLASS_COLOURS[pred_class]
 
         with col2:
