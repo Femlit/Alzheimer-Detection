@@ -98,13 +98,16 @@ if page == "Diagnose":
         # Preprocess and predict
         # Preprocess and predict
         img_input, img_display = preprocess_image(img_pil)
-        
-        # TFLite prediction
-        input_details  = model.get_input_details()
-        output_details = model.get_output_details()
-        model.set_tensor(input_details[0]['index'], img_input.astype('float32'))
-        model.invoke()
-        predictions = model.get_tensor(output_details[0]['index'])[0]
+        if hasattr(model, 'get_input_details'):
+            # TFLite interpreter
+            input_details  = model.get_input_details()
+            output_details = model.get_output_details()
+            model.set_tensor(input_details[0]['index'], img_input.astype('float32'))
+            model.invoke()
+            predictions = model.get_tensor(output_details[0]['index'])[0]
+        else:
+            # Keras model fallback
+            predictions = model.predict(img_input, verbose=0)[0]
         
         pred_idx   = int(np.argmax(predictions))
         pred_class = CLASSES[pred_idx]
