@@ -13,13 +13,7 @@ def load_model():
         with st.spinner("Downloading model... (one-time only)"):
             gdown.download(GDRIVE_URL, MODEL_PATH, quiet=False)
 
-    try:
-        import tflite_runtime.interpreter as tflite
-        Interpreter = tflite.Interpreter
-    except ImportError:
-        import tensorflow as tf
-        Interpreter = tf.lite.Interpreter
-
-    interpreter = Interpreter(model_path=MODEL_PATH)
+    import tensorflow as tf
+    interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
     interpreter.allocate_tensors()
     return interpreter
